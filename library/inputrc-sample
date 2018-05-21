@@ -1,0 +1,5 @@
+# Set bash to ignore case sensitive on autocomplete
+set completion-ignore-case on
+
+# Set bash to show a list of all possible completions
+set show-all-if-ambiguous on
