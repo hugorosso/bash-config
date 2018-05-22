@@ -3,6 +3,21 @@
 # == O quê é essa primeira linha? ==
 # Quando colomos "#!/bin/sh", estamos indicando para o sistema operacional que o interpretador que deverá ser utilizado para executar este programa é o disponível no diretório /bin/sh." Este interpretador faz parte da distribuição UNIX (Linux e MacOS) padrão e sua localização também é padronizada.
 
+# ===============
+# = Checking OS =
+# ===============
+
+if [ $(uname) = "Darwin" ]
+then
+    echo "Sistema operacional identificado: Mac OS"
+elif [ $(uname) = "Linux" ]
+then
+    echo "Sistema operacional identificado: Linux"
+else
+    echo "Este programa não é compatível com seu sistema operacional. Por gentileza, leia o arquivo README.md."
+    exit
+fi
+
 # =============================
 # = Checking user permissions =
 # =============================
@@ -57,14 +72,28 @@ DIR_PATH=$(pwd)
 # = Config .profile =
 # ===================
 
-cd ~
-cp ~/.profile .profile.backup
-cp $DIR_PATH/library/profile-sample .profile
-cat .profile.backup >> .profile
+if [ $(uname) = "Darwin" ]
+then
+    cd ~
+    cp ~/.profile .profile.backup
+    cp $DIR_PATH/library/profile-sample .profile
+    cat .profile.backup >> .profile
+elif [ $(uname) = "Linux" ]
+then
+    cd ~
+    cp ~/.bashrc .bashrc.backup
+    cat $DIR_PATH/library/profile-sample >> .bashrc
+fi
 
-# ===================
-# = Config terminal =
-# ===================
+# ==================================
+# = Exteding terminal capabilities =
+# ==================================
 
-touch /etc/inputrc
-cat $DIR_PATH/library/inputrc-sample >> /etc/inputrc
+if [ $(uname) = "Darwin" ]
+then
+    touch /etc/inputrc
+    cat $DIR_PATH/library/inputrc-sample >> /etc/inputrc
+elif [ $(uname) = "Linux" ]
+then
+    cat $DIR_PATH/library/inputrc-sample >> /etc/inputrc
+fi
